@@ -1,4 +1,5 @@
-# NixOS configurations
+# fundon's NixOS configurations
 
+## Thanks
 
-Forked from [mitchellh's nixos-config](https://github.com/mitchellh/nixos-config).
+* [mitchellh's nixos-config](https://github.com/mitchellh/nixos-config)
