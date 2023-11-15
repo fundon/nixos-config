@@ -67,7 +67,7 @@ darwin.lib.darwinSystem {
           pkgs.taplo
           pkgs.typos
           pkgs.xh
-          pkgs.yazi # Images Preview needs in host
+          #pkgs.yazi # Images Preview needs in host
           pkgs.rustscan
           pkgs.nixpkgs-fmt
 
