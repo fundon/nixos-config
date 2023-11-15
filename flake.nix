@@ -4,7 +4,7 @@
   nixConfig = {
     experimental-features = [ "nix-command" "flakes" ];
     substituters = [
-      "https://mirrors.ustc.edu.cn/nix-channels/store"
+      # "https://mirrors.ustc.edu.cn/nix-channels/store"
     ];
     #extra-platforms = [ "aarch64-darwin" "x86_64-darwin" ];
   };

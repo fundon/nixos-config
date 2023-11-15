@@ -33,6 +33,8 @@ darwin.lib.darwinSystem {
           pkgs.htop
           pkgs.xz
 
+          pkgs.gcc12
+
           pkgs.clang_16
           pkgs.mold
           pkgs.gnumake
@@ -41,43 +43,46 @@ darwin.lib.darwinSystem {
           pkgs.libiconv
           pkgs.zlib
 
-          pkgs.ast-grep
-          pkgs.bat
-          pkgs.bandwhich
-          pkgs.bun
+          pkgs.alejandra # nix formatter or pkgs.nixpkgs-fmt
+          #pkgs.ast-grep
+          #pkgs.bat
+          #pkgs.bandwhich
+          #pkgs.bun
           pkgs.delta
           pkgs.erdtree
           pkgs.eza
           pkgs.fd
-          pkgs.gping
+          #pkgs.gping
           pkgs.git-interactive-rebase-tool
-          pkgs.grex
-          pkgs.hexyl
-          pkgs.hyperfine
-          pkgs.hurl
-          pkgs.jql
-          pkgs.ouch
-          pkgs.onefetch
-          pkgs.pastel
-          pkgs.procs
-          pkgs.rage
+          #pkgs.grex
+          #pkgs.hexyl
+          #pkgs.hyperfine
+          #pkgs.hurl
+          #pkgs.jql
+          #pkgs.ouch
+          #pkgs.onefetch
+          #pkgs.pastel
+          #pkgs.procs
+          #pkgs.rage
           pkgs.ripgrep
           pkgs.sd
           pkgs.tailspin # CLI name: spin
-          pkgs.taplo
-          pkgs.typos
-          pkgs.xh
-          #pkgs.yazi # Images Preview needs in host
-          pkgs.rustscan
-          pkgs.nixpkgs-fmt
+          #pkgs.taplo
+          #pkgs.typos
+          ##pkgs.yazi # Images Preview needs in host
+          #pkgs.rustscan
 
-          pkgs.tree-sitter
-          pkgs.neovim
+          #pkgs.tree-sitter
 
           pkgs.rustup
         ];
 
         programs.home-manager.enable = true;
+
+
+        programs.neovim = {
+          enable = true;
+	      };
 
         programs.fzf = {
           enable = true;

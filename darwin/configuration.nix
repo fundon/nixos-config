@@ -21,7 +21,7 @@
       ];
 
       substituters = [
-        "https://mirrors.ustc.edu.cn/nix-channels/store"
+        # "https://mirrors.ustc.edu.cn/nix-channels/store"
       ];
 
       extra-platforms = lib.mkIf (pkgs.system == "aarch64-darwin") [ "aarch64-darwin" "x86_64-darwin" ];
