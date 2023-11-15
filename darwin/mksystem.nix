@@ -41,7 +41,6 @@ darwin.lib.darwinSystem {
           pkgs.libiconv
           pkgs.zlib
 
-          pkgs.atuin
           pkgs.ast-grep
           pkgs.bat
           pkgs.bandwhich
@@ -50,7 +49,6 @@ darwin.lib.darwinSystem {
           pkgs.erdtree
           pkgs.eza
           pkgs.fd
-          pkgs.fzf
           pkgs.gping
           pkgs.git-interactive-rebase-tool
           pkgs.grex
@@ -70,8 +68,6 @@ darwin.lib.darwinSystem {
           pkgs.typos
           pkgs.xh
           pkgs.yazi # Images Preview needs in host
-          pkgs.zellij
-          pkgs.zoxide
           pkgs.rustscan
           pkgs.nixpkgs-fmt
 
@@ -83,6 +79,13 @@ darwin.lib.darwinSystem {
 
         programs.home-manager.enable = true;
 
+        programs.fzf = {
+          enable = true;
+        };
+
+	programs.zellij = {
+          enable = true;
+	};
 
         programs.atuin = {
           enable = true;

@@ -2,6 +2,7 @@
   description = "fundon's NixOS configuration";
 
   nixConfig = {
+    experimental-features = [ "nix-command" "flakes" ];
     substituters = [
       "https://mirrors.ustc.edu.cn/nix-channels/store"
     ];
