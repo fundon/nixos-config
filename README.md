@@ -10,6 +10,10 @@ But I modified the original code to support file system `case sensitivity`.
 > and the original `/nix` is not case-sensitive, when in the `mv` file,
 > there will be a problem.
 
+## NixOS
+
+coming soon
+
 ## Darwin
 
 ### r2d2: iMac Intel
