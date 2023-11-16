@@ -85,7 +85,7 @@ in
           programs.home-manager.enable = true;
 
           imports = [
-            ../programs/bat.nix
+            ../programs/bat
             ../programs/eza.nix
             ../programs/git.nix
             ../programs/fzf.nix
