@@ -28,7 +28,7 @@
         date = "iso";
       };
       sequence = {
-        editor = pkgs.git-interactive-rebase-tool;
+        editor = "${pkgs.git-interactive-rebase-tool}";
       };
     };
   };
