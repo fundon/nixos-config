@@ -5,54 +5,21 @@
   vars,
   ...
 }: {
-  nix = {
-    package = pkgs.nix;
-    # Garbage Collection
-    gc = {
-      automatic = true;
-      interval.Day = 7;
-      options = "--delete-older-than 7d";
-    };
-    configureBuildUsers = true;
+  # Set `LANG`
+  # i18n.defaultLocale = "en_US.UTF-8";
 
-    settings = {
-      # https://github.com/NixOS/nix/issues/7273
-      auto-optimise-store = false;
-
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-
-      substituters = [
-        # "https://mirrors.ustc.edu.cn/nix-channels/store"
-      ];
-
-      extra-platforms = lib.mkIf (pkgs.system == "aarch64-darwin") ["aarch64-darwin" "x86_64-darwin"];
-
-      # Recommended when using `direnv` etc.
-      keep-derivations = true;
-      keep-outputs = true;
-    };
-  };
+  # Set time zone
+  # time.timeZone = "Asia/Hong_Kong";
 
   services = {
-    # Auto-Upgrade Daemon
+    # Auto upgrade daemon
     nix-daemon.enable = true;
   };
 
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnfreePredicate = _: true;
-  };
-
-  environment = {
-    systemPackages = [
-      pkgs.fish
-    ];
-
-    shells = [pkgs.bashInteractive pkgs.zsh pkgs.fish];
-    loginShell = pkgs.fish;
+  environment = with pkgs; {
+    # systemPackages = [fish];
+    shells = [bashInteractive fish zsh];
+    # loginShell = fish;
   };
 
   programs.gnupg.agent = {

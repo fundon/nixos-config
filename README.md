@@ -43,5 +43,6 @@ chsh -s /run/current-system/sw/bin/fish
 ## Thanks to the following configurations
 
 * [MatthiasBenaets](https://github.com/MatthiasBenaets/nixos-config)
+* [Misterio77](https://github.com/Misterio77/nix-config)
 * [mitchellh](https://github.com/mitchellh/nixos-config)
 * [srid](https://github.com/srid/nixos-config)

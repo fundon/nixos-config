@@ -1,15 +1,6 @@
-{
-  lib,
-  inputs,
-  nixpkgs,
-  darwin,
-  home-manager,
-  vars,
-  overlays,
-  ...
-}: let
+{...} @ args: let
   mkSystem = import ./mksystem.nix {
-    inherit lib inputs nixpkgs darwin home-manager vars overlays;
+    inherit (args) lib inputs nixpkgs darwin home-manager vars overlays;
   };
 in {
   # Intel

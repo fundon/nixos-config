@@ -15,7 +15,8 @@ in
     specialArgs = {inherit inputs vars;};
     modules = [
       ./configuration.nix
-      {nixpkgs.overlays = overlays;}
+      ./nix.nix
+      (import ./nixpkgs.nix {inherit overlays;})
       home-manager.darwinModules.home-manager
       ({pkgs, ...}: {
         home-manager.useGlobalPkgs = true;
@@ -24,7 +25,6 @@ in
         home-manager.users.fundon = {
           home.stateVersion = "23.05";
           home.sessionVariables = {
-            LANG = "en_US.UTF-8";
             EDITOR = "${vars.editor}";
             PAGER = "less -FirSwX";
           };
