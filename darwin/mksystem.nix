@@ -47,7 +47,6 @@ in
 
             pkgs.alejandra # nix formatter or pkgs.nixpkgs-fmt
             pkgs.ast-grep
-            pkgs.bat
             pkgs.bandwhich
             pkgs.bun
             pkgs.erdtree
@@ -86,6 +85,7 @@ in
           programs.home-manager.enable = true;
 
           imports = [
+            ../programs/bat.nix
             ../programs/eza.nix
             ../programs/git.nix
             ../programs/fzf.nix
