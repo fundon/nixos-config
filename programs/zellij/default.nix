@@ -1,9 +1,7 @@
-{ ... }:
-
-{
+{...}: {
   programs.zellij = {
     enable = true;
-    settings =  {
+    settings = {
       theme = "rose-pine-dawn";
       themes.rose-pine-dawn = {
         bg = "#faf4ed";
@@ -19,4 +17,5 @@
         white = "#575279";
       };
     };
-  }
+  };
+}
