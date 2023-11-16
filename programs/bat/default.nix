@@ -2,11 +2,13 @@
 {pkgs, ...}: {
   programs.bat = {
     enable = true;
-    theme = "rose-pine-dawn";
+    config = {
+      theme = "Solarized (light)";
+    };
     themes = {
-      rose-pine-dawn = {
+      rose-pine = {
         src = "${builtins.toString ./themes}";
-        file = "rose-pine-dawn.sublime-color-scheme";
+        file = "rose-pine.tmTheme";
       };
     };
   };
