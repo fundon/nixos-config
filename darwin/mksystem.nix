@@ -50,7 +50,6 @@ in
             pkgs.bat
             pkgs.bandwhich
             pkgs.bun
-            pkgs.delta
             pkgs.erdtree
             pkgs.eza
             pkgs.fd

@@ -1,4 +1,4 @@
-{
+{pkgs, ...}: {
   programs.git = {
     enable = true;
 
@@ -26,6 +26,9 @@
       };
       log = {
         date = "iso";
+      };
+      sequence = {
+        editor = pkgs.git-interactive-rebase-tool;
       };
     };
   };
