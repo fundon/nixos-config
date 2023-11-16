@@ -1,6 +1,10 @@
-{ config, pkgs, lib, vars, ... }:
-
 {
+  config,
+  pkgs,
+  lib,
+  vars,
+  ...
+}: {
   nix = {
     package = pkgs.nix;
     # Garbage Collection
@@ -24,7 +28,7 @@
         # "https://mirrors.ustc.edu.cn/nix-channels/store"
       ];
 
-      extra-platforms = lib.mkIf (pkgs.system == "aarch64-darwin") [ "aarch64-darwin" "x86_64-darwin" ];
+      extra-platforms = lib.mkIf (pkgs.system == "aarch64-darwin") ["aarch64-darwin" "x86_64-darwin"];
 
       # Recommended when using `direnv` etc.
       keep-derivations = true;
@@ -39,7 +43,7 @@
 
   nixpkgs.config = {
     allowUnfree = true;
-    allowUnfreePredicate = (_: true);
+    allowUnfreePredicate = _: true;
   };
 
   environment = {
@@ -47,7 +51,7 @@
       pkgs.fish
     ];
 
-    shells = [ pkgs.bashInteractive pkgs.zsh pkgs.fish ];
+    shells = [pkgs.bashInteractive pkgs.zsh pkgs.fish];
     loginShell = pkgs.fish;
   };
 
