@@ -20,16 +20,24 @@ coming soon
 
 ```console
 cd ~/.config/nix
-$ nix build .#darwinConfigurations.r2d2.system --show-trace
-$ /result/sw/bin/darwin-rebuild switch --flake .#r2d2 --show-trace
+nix build .#darwinConfigurations.r2d2.system --show-trace
+/result/sw/bin/darwin-rebuild switch --flake .#r2d2 --show-trace
 ```
 
 ### c3po: Apple M1 13 2020
 
 ```console
 cd ~/.config/nix
-$ nix build .#darwinConfigurations.c3po.system --show-trace
-$ /result/sw/bin/darwin-rebuild switch --flake .#c3po --show-trace
+nix build .#darwinConfigurations.c3po.system --show-trace
+/result/sw/bin/darwin-rebuild switch --flake .#c3po --show-trace
+```
+
+## Tips
+
+### Modify the shell
+
+```
+chsh -s /run/current-system/sw/bin/fish
 ```
 
 ## Thanks to the following configurations
