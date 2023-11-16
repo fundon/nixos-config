@@ -5,7 +5,8 @@
     theme = "rose-pine-dawn";
     themes = {
       rose-pine-dawn = {
-        src = "${builtins.toString ./themes/rose-pine-dawn.sublime-color-scheme}";
+        src = "${builtins.toString ./themes}";
+        file = "rose-pine-dawn.sublime-color-scheme";
       };
     };
   };
