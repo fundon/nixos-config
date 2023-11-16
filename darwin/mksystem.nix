@@ -45,6 +45,8 @@ in
             pkgs.libiconv
             pkgs.zlib
 
+            pkgs.tio # serial device I/O tool
+
             pkgs.alejandra # nix formatter or pkgs.nixpkgs-fmt
             pkgs.ast-grep
             pkgs.bandwhich
