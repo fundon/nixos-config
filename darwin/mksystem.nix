@@ -88,10 +88,10 @@ in
           programs.home-manager.enable = true;
 
           imports = [
-            ../programs/fzf
+            ../programs/fzf.nix
             ../programs/zellij
 
-            ../programs/starship
+            ../programs/starship.nix
           ];
 
           programs.git = {
