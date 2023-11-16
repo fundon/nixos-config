@@ -4,7 +4,10 @@
 
     userName = "Fangdun Tsai";
     userEmail = "cfddream@gmail.com";
-    signing = "AA9908114E81F4B5";
+    signing = {
+      key = "AA9908114E81F4B5";
+      signByDefault = true;
+    };
 
     delta = {
       enable = true;
