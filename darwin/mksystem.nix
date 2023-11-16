@@ -51,10 +51,9 @@ in
             pkgs.bandwhich
             pkgs.bun
             pkgs.erdtree
-            pkgs.eza
-            pkgs.fd
+            pkgs.fd # fzf's default command
             pkgs.gping
-            pkgs.git-interactive-rebase-tool
+            pkgs.git-interactive-rebase-tool # git's sequence editor
             pkgs.grex
             pkgs.hexyl
             pkgs.hyperfine
@@ -87,6 +86,7 @@ in
           programs.home-manager.enable = true;
 
           imports = [
+            ../programs/eza.nix
             ../programs/git.nix
             ../programs/fzf.nix
 

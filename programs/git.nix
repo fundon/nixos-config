@@ -1,3 +1,4 @@
+# https://github.com/nix-community/home-manager/blob/master/modules/programs/git.nix
 {pkgs, ...}: {
   programs.git = {
     enable = true;
