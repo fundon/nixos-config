@@ -17,6 +17,16 @@
       };
     };
 
+    aliases = {
+      graph = "log --graph --pretty=custom";
+
+      # List the latest 20 commits
+      l = "log -n 20 --graph --abbrev-commit --pretty=custom";
+
+      # List contributors
+      lc = "shortlog --email --summary --numbered";
+    };
+
     extraConfig = {
       init = {
         defaultBranch = "main";
@@ -40,15 +50,6 @@
         #                     │        │            └─ date (relative)
         #                     │        └─ decorations (branch, heads or tags)
         #                     └─ hash (abbreviated)
-      };
-      aliases = {
-        graph = "log --graph --pretty=custom";
-
-        # List the latest 20 commits
-        l = "log -n 20 --graph --abbrev-commit --pretty=custom";
-
-        # List contributors
-        lc = "shortlog --email --summary --numbered";
       };
     };
   };
