@@ -75,6 +75,8 @@ in
 
             #pkgs.tree-sitter
 
+            pkgs.nodejs_20 # LTS
+
             pkgs.rustup
           ];
 
@@ -113,13 +115,6 @@ in
             enable = true;
             shellInit = ''
               set fish_greeting
-
-              # Nix
-              if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
-                source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
-              end
-              set -gxa PATH /etc/profiles/per-user/fundon/bin
-              # End Nix
             '';
           };
         };
