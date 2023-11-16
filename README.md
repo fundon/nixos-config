@@ -1,6 +1,7 @@
 # fundon's NixOS configurations
 
-## Thanks
+## Thanks to the following configurations
 
-* [mitchellh's nixos-config](https://github.com/mitchellh/nixos-config)
-* [MatthiasBenaets's nixos-config](https://github.com/MatthiasBenaets/nixos-config)
+* [MatthiasBenaets](https://github.com/MatthiasBenaets/nixos-config)
+* [mitchellh](https://github.com/mitchellh/nixos-config)
+* [srid](https://github.com/srid/nixos-config)

@@ -25,13 +25,10 @@ in
           home.stateVersion = "23.05";
           home.sessionVariables = {
             LANG = "en_US.UTF-8";
-            LC_CTYPE = "en_US.UTF-8";
-            LC_ALL = "en_US.UTF-8";
             EDITOR = "${vars.editor}";
             PAGER = "less -FirSwX";
           };
           home.packages = [
-            pkgs.git
             pkgs.wget
             pkgs.file
             pkgs.gnupg
@@ -93,7 +90,13 @@ in
           imports = [
             ../programs/fzf
             ../programs/zellij
+
+            ../programs/starship
           ];
+
+          programs.git = {
+            enable = true;
+          };
 
           programs.neovim = {
             enable = true;
@@ -105,25 +108,6 @@ in
 
           programs.zoxide = {
             enable = true;
-          };
-
-          programs.starship = {
-            enable = true;
-            settings = {
-              add_newline = false;
-              command_timeout = 1000;
-              character = {
-                success_symbol = "[λ](bold green)";
-                error_symbol = "[λ](bold red)";
-                vicmd_symbol = "[V](bold green)";
-              };
-              package = {
-                disabled = true;
-              };
-              cmake = {
-                symbol = "∆ ";
-              };
-            };
           };
 
           programs.fish = {
