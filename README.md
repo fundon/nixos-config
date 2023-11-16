@@ -1,5 +1,11 @@
 # fundon's NixOS configurations
 
+## Get started
+
+I used [`nix-installer`](https://github.com/DeterminateSystems/nix-installer) to init my setups.
+
+But I modified the original code to support file system case sensitivity.
+
 ## Darwin
 
 ### r2d2: iMac Intel
