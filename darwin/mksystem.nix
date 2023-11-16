@@ -68,7 +68,7 @@ in
             pkgs.onefetch
             pkgs.pastel
             pkgs.procs
-            pkgs.rage
+            #pkgs.rage
             pkgs.ripgrep
             pkgs.sd
             pkgs.tailspin # CLI name: spin
@@ -82,17 +82,20 @@ in
             pkgs.rustup
           ];
 
+          # https://github.com/nix-community/home-manager/issues/3854#issuecomment-1610260754
+          # home.file.".config/zellij/themes" = {
+          #   recursive = true;
+          #   source = "/.config/nix/programs/zellij/themes";
+          # };
+
           programs.home-manager.enable = true;
 
+          imports = [
+            ../programs/fzf
+            ../programs/zellij
+          ];
+
           programs.neovim = {
-            enable = true;
-          };
-
-          programs.fzf = {
-            enable = true;
-          };
-
-          programs.zellij = {
             enable = true;
           };
 
