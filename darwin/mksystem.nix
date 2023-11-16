@@ -88,15 +88,13 @@ in
           programs.home-manager.enable = true;
 
           imports = [
+            ../programs/git.nix
             ../programs/fzf.nix
+
             ../programs/zellij
 
             ../programs/starship.nix
           ];
-
-          programs.git = {
-            enable = true;
-          };
 
           programs.neovim = {
             enable = true;
