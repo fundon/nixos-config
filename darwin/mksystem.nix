@@ -37,6 +37,8 @@ in
             RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup";
 
             ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/";
+
+            LIBRARY_PATH = ''${lib.makeLibraryPath [pkgs.libiconv pkgs.openssl]}''${LIBRARY_PATH:+:$LIBRARY_PATH}'';
           };
           home.packages = [
             pkgs.wget
