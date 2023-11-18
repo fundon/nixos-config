@@ -112,7 +112,13 @@ in
             pkgs.neovim-nightly
             # rust-bin.nightly.latest.default
             ((pkgs.rust-bin // {distRoot = "${builtins.getEnv "RUSTUP_DIST_SERVER"}/dist";}).nightly.latest.default.override {
-              targets = ["x86_64-unknown-linux-gnu" "wasm32-unknown-unknown"];
+              targets =
+                ["wasm32-unknown-unknown"]
+                ++ (
+                  if pkgs.stdenv.hostPlatform.isLinux
+                  then ["${arch}-unknown-linux-gnu"]
+                  else ["${arch}-apple-darwin"]
+                );
               # https://rust-lang.github.io/rustup-components-history/x86_64-apple-darwin.html
               # https://rust-lang.github.io/rustup-components-history/aarch64-apple-darwin.html
               extensions =
