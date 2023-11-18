@@ -61,6 +61,7 @@ in
             pkgs.hexyl
             pkgs.hyperfine
             pkgs.hurl
+            pkgs.jless
             pkgs.jql
             pkgs.ouch
             pkgs.onefetch
