@@ -91,11 +91,28 @@ in
             pkgs.fd # fzf's default command
             pkgs.sd
 
+            ## Editor
+            # pkgs.neovim
             pkgs.tree-sitter
 
             ## Programmings
-            pkgs.nodejs_20 # Node LTS
-            pkgs.rustup # Rust
+            ### Node LTS
+            pkgs.nodejs_20
+            (pkgs.yarn.override {
+              nodejs = pkgs.nodejs_20;
+            })
+
+            ### Rust
+            # pkgs.rustup
+
+            ### Overlays
+            pkgs.neovim-nightly
+            # rust-bin.nightly.latest.default
+            ((pkgs.rust-bin // {distRoot = "${builtins.getEnv "RUSTUP_DIST_SERVER"}/dist";}).nightly.latest.default.override {
+              targets = ["x86_64-unknown-linux-gnu" "wasm32-unknown-unknown"];
+              extensions = ["rust-analyzer" "rust-src" "rust-std" "rustc-codegen-cranelift"];
+            })
+            pkgs.zigpkgs.master
           ];
 
           programs.home-manager.enable = true;
@@ -110,10 +127,6 @@ in
 
             ../programs/starship.nix
           ];
-
-          programs.neovim = {
-            enable = true;
-          };
 
           programs.atuin = {
             enable = true;

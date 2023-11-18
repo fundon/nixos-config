@@ -3,9 +3,7 @@
 
   nixConfig = {
     experimental-features = [ "nix-command" "flakes" ];
-    substituters = [
-      # "https://mirrors.ustc.edu.cn/nix-channels/store"
-    ];
+    # substituters = [ ];
     #extra-platforms = [ "aarch64-darwin" "x86_64-darwin" ];
   };
 
@@ -42,27 +40,27 @@
     #  inputs.nixpkgs.follows = "nixpkgs";
     #};
 
-    #neovim-nightly-overlay = {
-    #  url = "github:nix-community/neovim-nightly-overlay";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
-    #rust-overlay = {
-    #  url = "github:oxalica/rust-overlay";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
-    #zig-overlay = {
-    #  url = "github:mitchellh/zig-overlay";
-    #  inputs.nixpkgs.follows = "nixpkgs";
-    #};
+    neovim-nightly-overlay = {
+     url = "github:nix-community/neovim-nightly-overlay";
+     inputs.nixpkgs.follows = "nixpkgs";
+    };
+    rust-overlay = {
+     url = "github:oxalica/rust-overlay";
+     inputs.nixpkgs.follows = "nixpkgs";
+    };
+    zig-overlay = {
+     url = "github:mitchellh/zig-overlay";
+     inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ { nixpkgs, flake-utils, home-manager, darwin, ... }:
     let
       # Overlays is the list of overlays we want to apply from flake inputs.
-      overlays = [
-        #  inputs.neovim-nightly-overlay.overlay
-        #  inputs.rust-overlay.overlays.default
-        #  inputs.zig-overlay.overlays.default
+      overlays = with inputs; [
+         neovim-nightly-overlay.overlay
+         rust-overlay.overlays.default
+         zig-overlay.overlays.default
       ];
 
       vars = {
