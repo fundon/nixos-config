@@ -104,6 +104,7 @@ in
 
             ### Rust
             # pkgs.rustup
+            pkgs.sccache
 
             ### Overlays
             pkgs.neovim-nightly
@@ -114,7 +115,7 @@ in
               # https://rust-lang.github.io/rustup-components-history/aarch64-apple-darwin.html
               extensions =
                 ["rust-analyzer" "rust-src" "rust-std"]
-                ++ lib.optionals (pkgs.stdenv.hostPlatform.isx86_64) ["rustc-codegen-cranelift"];
+                ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 ["rustc-codegen-cranelift"];
             })
             pkgs.zigpkgs.master
           ];
