@@ -25,10 +25,18 @@ in
         home-manager.users.fundon = {
           home.stateVersion = "23.05";
           home.sessionVariables = {
-            EDITOR = "${vars.editor}";
-            PAGER = "less -FirSwX";
             # https://github.com/NixOS/nix/issues/2982
             NIX_PATH = "$HOME/.nix-defexpr/channels";
+
+            EDITOR = "${vars.editor}";
+            PAGER = "less -FirSwX";
+
+            GOPROXY = "https://goproxy.io,direct";
+
+            RUSTUP_DIST_SERVER = "https://rsproxy.cn";
+            RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup";
+
+            ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/";
           };
           home.packages = [
             pkgs.wget
@@ -47,20 +55,12 @@ in
             pkgs.libiconv
             pkgs.zlib
 
-            pkgs.tio # serial device I/O tool
-
             pkgs.alejandra # nix formatter or pkgs.nixpkgs-fmt
             pkgs.ast-grep
-            pkgs.bandwhich
             pkgs.bun
-            pkgs.erdtree
-            pkgs.fd # fzf's default command
-            pkgs.gping
             pkgs.git-interactive-rebase-tool # git's sequence editor
-            pkgs.grex
             pkgs.hexyl
             pkgs.hyperfine
-            pkgs.hurl
             pkgs.jless
             pkgs.jql
             pkgs.ouch
@@ -68,19 +68,34 @@ in
             pkgs.pastel
             pkgs.procs
             pkgs.rage
-            pkgs.ripgrep
-            pkgs.sd
             pkgs.tailspin # CLI name: spin
             pkgs.taplo
             pkgs.typos
-            pkgs.yazi # Images Preview needs in host
+
+            ## I/O Devices
+            pkgs.tio
+
+            ## Network
+            pkgs.bandwhich
+            pkgs.gping
             pkgs.rustscan
+            pkgs.hurl
+
+            ## Filesystem
+            pkgs.erdtree
+            pkgs.ripgrep
+            pkgs.grex
+            pkgs.yazi # Images Preview needs in host
+
+            ## Search
+            pkgs.fd # fzf's default command
+            pkgs.sd
 
             pkgs.tree-sitter
 
-            pkgs.nodejs_20 # LTS
-
-            pkgs.rustup
+            ## Programmings
+            pkgs.nodejs_20 # Node LTS
+            pkgs.rustup # Rust
           ];
 
           programs.home-manager.enable = true;
@@ -112,6 +127,15 @@ in
             enable = true;
             shellInit = ''
               set fish_greeting
+
+              if isatty
+                  set -x GPG_TTY (tty)
+              end
+
+              set -gx PNPM_HOME $HOME/.local/share/pnpm
+              set -gxp PATH $HOME/.npm-global/bin
+              set -gxp PATH $HOME/.cargo/bin
+              set -gxp PATH $HOME/.bin
             '';
           };
         };

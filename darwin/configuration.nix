@@ -22,8 +22,27 @@
     enableSSHSupport = true;
   };
 
-  programs.zsh.enable = true;
-  programs.fish.enable = true;
+  programs.zsh = {
+    enable = true;
+    shellInit = ''
+      # Nix
+      if [ -e '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh' ]; then
+        . '/nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh'
+      fi
+      # End Nix
+    '';
+  };
+
+  programs.fish = {
+    enable = true;
+    shellInit = ''
+      # Nix
+      if test -e /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
+        source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.fish
+      end
+      # End Nix
+    '';
+  };
 
   # MacOS User
   # https://github.com/nix-community/home-manager/issues/4026
