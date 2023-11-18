@@ -32,12 +32,18 @@ nix build .#darwinConfigurations.c3po.system --show-trace
 /result/sw/bin/darwin-rebuild switch --flake .#c3po --show-trace
 ```
 
-## Tips
+### Tips
 
-### Modify the shell
+* Modify the shell
 
 ```console
 chsh -s /run/current-system/sw/bin/fish
+```
+
+* List generations
+
+```console
+nix-env --list-generations --profile ~/.local/state/nix/profiles/home-manager
 ```
 
 ## Thanks to the following configurations

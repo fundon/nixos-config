@@ -27,6 +27,8 @@ in
           home.sessionVariables = {
             EDITOR = "${vars.editor}";
             PAGER = "less -FirSwX";
+            # https://github.com/NixOS/nix/issues/2982
+            NIX_PATH = "$HOME/.nix-defexpr/channels";
           };
           home.packages = [
             pkgs.wget
@@ -64,27 +66,21 @@ in
             pkgs.onefetch
             pkgs.pastel
             pkgs.procs
-            #pkgs.rage
+            pkgs.rage
             pkgs.ripgrep
             pkgs.sd
             pkgs.tailspin # CLI name: spin
             pkgs.taplo
             pkgs.typos
-            ##pkgs.yazi # Images Preview needs in host
-            #pkgs.rustscan
+            pkgs.yazi # Images Preview needs in host
+            pkgs.rustscan
 
-            #pkgs.tree-sitter
+            pkgs.tree-sitter
 
             pkgs.nodejs_20 # LTS
 
             pkgs.rustup
           ];
-
-          # https://github.com/nix-community/home-manager/issues/3854#issuecomment-1610260754
-          # home.file.".config/zellij/themes" = {
-          #   recursive = true;
-          #   source = "/.config/nix/programs/zellij/themes";
-          # };
 
           programs.home-manager.enable = true;
 
