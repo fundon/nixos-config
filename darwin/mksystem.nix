@@ -77,7 +77,6 @@ in
 
             pkgs.alejandra # nix formatter or pkgs.nixpkgs-fmt
             pkgs.bun
-            pkgs.git-interactive-rebase-tool # git's sequence editor
             pkgs.hexyl
             pkgs.hyperfine
             pkgs.jless
@@ -90,6 +89,10 @@ in
             pkgs.tailspin # CLI name: spin
             pkgs.taplo
             pkgs.typos
+
+            ## Git
+            pkgs.git-interactive-rebase-tool # git's sequence editor
+            pkgs.git-cliff
 
             ## I/O Devices
             pkgs.tio
@@ -205,6 +208,10 @@ in
               set -gxp PATH $HOME/.cargo/bin
               set -gxp PATH $HOME/.bin
             '';
+            shellAbbrs = {
+              cargo-login = "cargo --registry crates-io login";
+              cargo-publish = "cargo --registry crates-io publish";
+            };
           };
         };
       })
