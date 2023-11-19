@@ -58,7 +58,7 @@ in
             pkgs.zlib
 
             pkgs.alejandra # nix formatter or pkgs.nixpkgs-fmt
-            pkgs.ast-grep
+            # pkgs.ast-grep
             pkgs.bun
             pkgs.git-interactive-rebase-tool # git's sequence editor
             pkgs.hexyl
