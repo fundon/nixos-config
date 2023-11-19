@@ -34,6 +34,14 @@ nix build .#darwinConfigurations.c3po.system --show-trace
 
 ### Tips
 
+* If a standalone volume be used. Turns on `auto` option, which is required.
+
+> Because `/et/shells`, `/etc/nix`, ... they are symbolic links. Linking to `/nix/*`.
+```
+# nix-installer created volume labelled `Nix Store`
+UUID=767AB14B-7D53-4F88-9114-4FA344DF73BB /nix apfs rw,auto,nobrowse,suid,owners
+```
+
 * Modify the shell
 
 ```console

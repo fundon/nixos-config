@@ -2,7 +2,7 @@
   description = "fundon's NixOS configuration";
 
   nixConfig = {
-    experimental-features = [ "nix-command" "flakes" ];
+    experimental-features = ["nix-command" "flakes"];
     # substituters = [ ];
     #extra-platforms = [ "aarch64-darwin" "x86_64-darwin" ];
   };
@@ -40,42 +40,46 @@
     #  inputs.nixpkgs.follows = "nixpkgs";
     #};
 
-    neovim-nightly-overlay = {
-     url = "github:nix-community/neovim-nightly-overlay";
-     inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # neovim-nightly-overlay = {
+    #  url = "github:nix-community/neovim-nightly-overlay";
+    #  inputs.nixpkgs.follows = "nixpkgs";
+    # };
     rust-overlay = {
-     url = "github:oxalica/rust-overlay";
-     inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:oxalica/rust-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     zig-overlay = {
-     url = "github:mitchellh/zig-overlay";
-     inputs.nixpkgs.follows = "nixpkgs";
+      url = "github:mitchellh/zig-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = inputs @ { nixpkgs, flake-utils, home-manager, darwin, ... }:
-    let
-      # Overlays is the list of overlays we want to apply from flake inputs.
-      overlays = with inputs; [
-         neovim-nightly-overlay.overlay
-         rust-overlay.overlays.default
-         zig-overlay.overlays.default
-      ];
+  outputs = inputs @ {
+    nixpkgs,
+    flake-utils,
+    home-manager,
+    darwin,
+    ...
+  }: let
+    # Overlays is the list of overlays we want to apply from flake inputs.
+    overlays = with inputs; [
+      # neovim-nightly-overlay.overlay
+      rust-overlay.overlays.default
+      zig-overlay.overlays.default
+    ];
 
-      vars = {
-        editor = "nvim";
-        shell = "fish";
-        user = "fundon";
-      };
-    in
-    {
-      # Darwin Configurations
-      darwinConfigurations = (
-        import ./darwin {
-          inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager darwin vars overlays;
-        }
-      );
+    vars = {
+      editor = "nvim";
+      shell = "fish";
+      user = "fundon";
     };
+  in {
+    # Darwin Configurations
+    darwinConfigurations = (
+      import ./darwin {
+        inherit (nixpkgs) lib;
+        inherit inputs nixpkgs home-manager darwin vars overlays;
+      }
+    );
+  };
 }

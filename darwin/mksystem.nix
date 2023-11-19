@@ -18,7 +18,10 @@ in
       ./nix.nix
       (import ./nixpkgs.nix {inherit overlays;})
       home-manager.darwinModules.home-manager
-      ({pkgs, ...}: {
+      ({pkgs, ...}: let
+        isDarwin = pkgs.stdenv.isDarwin;
+        isx86_64 = pkgs.stdenv.hostPlatform.isx86_64;
+      in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
 
@@ -36,9 +39,23 @@ in
             RUSTUP_DIST_SERVER = "https://rsproxy.cn";
             RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup";
 
+            PNPM_HOME = "$HOME/.local/share/pnpm";
             ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/";
 
-            LIBRARY_PATH = ''${lib.makeLibraryPath [pkgs.libiconv pkgs.openssl]}''${LIBRARY_PATH:+:$LIBRARY_PATH}'';
+            LIBRARY_PATH = lib.makeLibraryPath [
+              pkgs.libiconv
+              pkgs.openssl
+            ];
+
+            # CPATH = "${pkgs.darwin.Libsystem}/include";
+            # LLVM_CONFIG_PATH = "${pkgs.llvm}/bin/llvm-config";
+            # LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib];
+            # LDFLAGS="-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib";
+            # NIX_LDFLAGS = ''${lib.concatStringsSep " " [
+            #     "-F${pkgs.darwin.apple_sdk.frameworks.CoreFoundation}/Library/Frameworks -framework CoreFoundation"
+            #     "-F${pkgs.darwin.apple_sdk.frameworks.CoreServices}/Library/Frameworks -framework CoreServices"
+            #     "-F${pkgs.darwin.apple_sdk.frameworks.Security}/Library/Frameworks -framework Security"
+            #   ]}'';
           };
           home.packages = [
             pkgs.wget
@@ -56,9 +73,9 @@ in
             pkgs.pkg-config
             pkgs.libiconv
             pkgs.zlib
+            pkgs.ninja
 
             pkgs.alejandra # nix formatter or pkgs.nixpkgs-fmt
-            # pkgs.ast-grep
             pkgs.bun
             pkgs.git-interactive-rebase-tool # git's sequence editor
             pkgs.hexyl
@@ -90,14 +107,24 @@ in
             pkgs.yazi # Images Preview needs in host
 
             ## Search
+            # pkgs.ast-grep
             pkgs.fd # fzf's default command
             pkgs.sd
 
             ## Editor
-            # pkgs.neovim
+            pkgs.neovim
             pkgs.tree-sitter
 
             ## Programmings
+
+            ### Shell
+            pkgs.shfmt
+
+            ### Lua
+            # pkgs.lua-language-server.override {
+            # }
+            pkgs.stylua
+
             ### Node LTS
             pkgs.nodejs_20
             (pkgs.yarn.override {
@@ -109,24 +136,40 @@ in
             pkgs.sccache
 
             ### Overlays
-            pkgs.neovim-nightly
+            # pkgs.neovim-nightly
             # rust-bin.nightly.latest.default
             ((pkgs.rust-bin // {distRoot = "${builtins.getEnv "RUSTUP_DIST_SERVER"}/dist";}).nightly.latest.default.override {
               targets =
                 ["wasm32-unknown-unknown"]
-                ++ (
-                  if pkgs.stdenv.hostPlatform.isLinux
-                  then ["${arch}-unknown-linux-gnu"]
-                  else ["${arch}-apple-darwin"]
-                );
+                ++ [
+                  (
+                    lib.concatStringsSep "-" [
+                      "${arch}"
+                      (
+                        if isDarwin
+                        then "apple-darwin"
+                        else "unknown-linux-gnu"
+                      )
+                    ]
+                  )
+                ];
               # https://rust-lang.github.io/rustup-components-history/x86_64-apple-darwin.html
               # https://rust-lang.github.io/rustup-components-history/aarch64-apple-darwin.html
               extensions =
                 ["rust-analyzer" "rust-src" "rust-std"]
-                ++ lib.optionals pkgs.stdenv.hostPlatform.isx86_64 ["rustc-codegen-cranelift"];
+                ++ lib.optionals isx86_64 ["rustc-codegen-cranelift"];
             })
             pkgs.zigpkgs.master
           ];
+          # ++ lib.optionals isDarwin (with pkgs.darwin.apple_sdk.frameworks; [
+          #   # AppKit
+          #   Foundation
+          #   CoreFoundation
+          #   CoreServices
+          #   # IOKit
+          #   # Security
+          #   # System
+          # ]);
 
           programs.home-manager.enable = true;
 
@@ -158,7 +201,6 @@ in
                   set -x GPG_TTY (tty)
               end
 
-              set -gx PNPM_HOME $HOME/.local/share/pnpm
               set -gxp PATH $HOME/.npm-global/bin
               set -gxp PATH $HOME/.cargo/bin
               set -gxp PATH $HOME/.bin
