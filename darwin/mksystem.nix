@@ -209,8 +209,8 @@ in
               set -gxp PATH $HOME/.bin
             '';
             shellAbbrs = {
-              cargo-login = "cargo --registry crates-io login";
-              cargo-publish = "cargo --registry crates-io publish";
+              cargo-login = "cargo login --registry crates-io";
+              cargo-publish = "cargo publish --registry crates-io";
             };
           };
         };
