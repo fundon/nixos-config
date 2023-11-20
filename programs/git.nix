@@ -1,12 +1,16 @@
 # https://github.com/nix-community/home-manager/blob/master/modules/programs/git.nix
-{pkgs, ...}: {
+{
+  pkgs,
+  vars,
+  ...
+}: {
   programs.git = {
     enable = true;
 
-    userName = "Fangdun Tsai";
-    userEmail = "cfddream@gmail.com";
+    userName = vars.fullName;
+    userEmail = vars.email;
     signing = {
-      key = "AA9908114E81F4B5";
+      key = vars.key;
       signByDefault = true;
     };
 
@@ -31,6 +35,9 @@
     extraConfig = {
       init = {
         defaultBranch = "main";
+      };
+      push = {
+        autoSetupRemote = true;
       };
       merge = {
         conflictstyle = "diff3";

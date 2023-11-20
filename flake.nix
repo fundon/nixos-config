@@ -68,18 +68,35 @@
       zig-overlay.overlays.default
     ];
 
+    user = "fundon";
     vars = {
+      inherit user;
       editor = "nvim";
       shell = "fish";
-      user = "fundon";
+      email = "${user}@pindash.io";
+      key = "AA9908114E81F4B5";
+      fullName = "Fangdun Tsai";
     };
-  in {
-    # Darwin Configurations
-    darwinConfigurations = (
-      import ./darwin {
-        inherit (nixpkgs) lib;
-        inherit inputs nixpkgs home-manager darwin vars overlays;
-      }
-    );
-  };
+  in
+    {
+      # Darwin Configurations
+      darwinConfigurations = (
+        import ./darwin {
+          inherit (nixpkgs) lib;
+          inherit inputs nixpkgs home-manager darwin vars overlays;
+        }
+      );
+    }
+    // flake-utils.lib.eachDefaultSystem (system: rec {
+      # packages = {
+      #   pkgs = nixpkgs.legacyPackages.${system};
+      # };
+      #
+      # checks = packages;
+
+      devShells.default = with nixpkgs.legacyPackages.${system};
+        mkShellNoCC {
+          packages = [nvfetcher];
+        };
+    });
 }

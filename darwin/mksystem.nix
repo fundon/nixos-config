@@ -19,7 +19,7 @@ in
       ./nix.nix
       (import ./nixpkgs.nix {inherit overlays;})
       home-manager.darwinModules.home-manager
-      ({pkgs, ...}: let
+      ({pkgs, ...} @ args: let
         isDarwin = pkgs.stdenv.isDarwin;
         isx86_64 = pkgs.stdenv.hostPlatform.isx86_64;
       in {
@@ -92,6 +92,7 @@ in
             pkgs.typos
 
             ## Git
+            pkgs.gh
             pkgs.git-interactive-rebase-tool # git's sequence editor
             pkgs.git-cliff
 
@@ -179,7 +180,7 @@ in
           imports = [
             ../programs/bat
             ../programs/eza.nix
-            ../programs/git.nix
+            (import ../programs/git.nix (args // vars))
             ../programs/fzf.nix
 
             ../programs/zellij
