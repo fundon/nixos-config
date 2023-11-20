@@ -9,6 +9,7 @@
   ...
 }: arch: let
   system = "${arch}-darwin";
+  rustChannel = "nightly"; # stable | beta | nightly
 in
   darwin.lib.darwinSystem {
     inherit system;
@@ -124,8 +125,7 @@ in
             pkgs.shfmt
 
             ### Lua
-            # pkgs.lua-language-server.override {
-            # }
+            # pkgs.lua-language-server
             pkgs.stylua
 
             ### Node LTS
@@ -141,7 +141,7 @@ in
             ### Overlays
             # pkgs.neovim-nightly
             # rust-bin.nightly.latest.default
-            ((pkgs.rust-bin // {distRoot = "${builtins.getEnv "RUSTUP_DIST_SERVER"}/dist";}).nightly.latest.default.override {
+            ((pkgs.rust-bin // {distRoot = "${builtins.getEnv "RUSTUP_DIST_SERVER"}/dist";}).${rustChannel}.latest.default.override {
               targets =
                 ["wasm32-unknown-unknown"]
                 ++ [
@@ -160,7 +160,7 @@ in
               # https://rust-lang.github.io/rustup-components-history/aarch64-apple-darwin.html
               extensions =
                 ["rust-analyzer" "rust-src" "rust-std"]
-                ++ lib.optionals isx86_64 ["rustc-codegen-cranelift"];
+                ++ lib.optionals (isx86_64 && rustChannel == "nightly") ["rustc-codegen-cranelift"];
             })
             pkgs.zigpkgs.master
           ];
