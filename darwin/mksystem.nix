@@ -141,7 +141,7 @@ in
             ### Overlays
             # pkgs.neovim-nightly
             # rust-bin.nightly.latest.default
-            ((pkgs.rust-bin // {distRoot = "${builtins.getEnv "RUSTUP_DIST_SERVER"}/dist";}).${rustChannel}.latest.default.override {
+            (pkgs.rust-bin.${rustChannel}.latest.default.override {
               targets =
                 ["wasm32-unknown-unknown"]
                 ++ [
