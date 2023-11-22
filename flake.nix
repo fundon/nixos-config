@@ -74,7 +74,7 @@
       editor = "nvim";
       shell = "fish";
       email = "${user}@pindash.io";
-      key = "AA9908114E81F4B5";
+      key = "C4E964E8E5E3A7BF";
       fullName = "Fangdun Tsai";
     };
   in
