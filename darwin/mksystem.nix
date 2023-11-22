@@ -22,6 +22,7 @@ in
       ({pkgs, ...} @ args: let
         isDarwin = pkgs.stdenv.isDarwin;
         isx86_64 = pkgs.stdenv.hostPlatform.isx86_64;
+        SDKROOT = "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk";
       in {
         home-manager.useGlobalPkgs = true;
         home-manager.useUserPackages = true;
@@ -43,12 +44,18 @@ in
             PNPM_HOME = "$HOME/.local/share/pnpm";
             ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/";
 
+            # `xcrun --show-sdk-path`
+            inherit SDKROOT;
+            # CC = "clang";
+            # CXX = "clang++";
+            # CFLAGS = "-Wno-undef-prefix";
+            CPATH = "${SDKROOT}/usr/include";
+
             LIBRARY_PATH = lib.makeLibraryPath [
               pkgs.libiconv
               pkgs.openssl
             ];
 
-            # CPATH = "${pkgs.darwin.Libsystem}/include";
             # LLVM_CONFIG_PATH = "${pkgs.llvm}/bin/llvm-config";
             # LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib];
             # LDFLAGS="-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib";
@@ -66,7 +73,9 @@ in
             pkgs.xz
 
             #pkgs.gcc12
-            pkgs.clang_16
+            # pkgs.clang_16
+            # pkgs.llvm_16.dev
+            # pkgs.llvm_16 # without llvm-config
 
             pkgs.mold
             pkgs.gnumake
@@ -80,8 +89,6 @@ in
             pkgs.bun
             pkgs.hexyl
             pkgs.hyperfine
-            pkgs.jless
-            pkgs.jql
             pkgs.ouch
             pkgs.onefetch
             pkgs.pastel
@@ -115,6 +122,10 @@ in
             # pkgs.ast-grep
             pkgs.fd # fzf's default command
             pkgs.sd
+
+            ## JSON/YAML
+            pkgs.jless
+            pkgs.jql
 
             ## Editor
             pkgs.neovim

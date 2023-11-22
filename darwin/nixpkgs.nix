@@ -10,7 +10,11 @@ in {
           rust-bin =
             prev.rust-bin
             // {
-              distRoot = "${rustup_dist_server}/dist";
+              distRoot = "${
+                if builtins.hasContext rustup_dist_server
+                then rustup_dist_server
+                else "https://rsproxy.cn"
+              }/dist";
             };
         })
       ];

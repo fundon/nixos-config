@@ -96,7 +96,7 @@
 
       devShells.default = with nixpkgs.legacyPackages.${system};
         mkShellNoCC {
-          packages = [nvfetcher];
+          packages = [cowsay];
         };
     });
 }
