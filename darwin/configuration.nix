@@ -15,6 +15,10 @@
 
   environment = with pkgs; {
     shells = [bashInteractive fish zsh];
+    systemPackages = [
+      # PostgreSQL
+      postgresql_16
+    ];
   };
 
   programs.gnupg.agent = {

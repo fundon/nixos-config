@@ -22,6 +22,12 @@
       };
     };
 
+    ignores = [
+      "*~"
+      ".DS_Store"
+      "*.swp"
+    ];
+
     aliases = {
       graph = "log --graph --pretty=custom";
 

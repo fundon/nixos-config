@@ -54,6 +54,15 @@ chsh -s /run/current-system/sw/bin/fish
 nix-env --list-generations --profile ~/.local/state/nix/profiles/home-manager
 ```
 
+* Install `libpq`
+
+> Currently, `libpq` is not a package in `nix`.
+> Waiting this PR [#234470](https://github.com/NixOS/nixpkgs/pull/234470).
+
+```console
+$ nix-env -iA --file https://github.com/szlend/nixpkgs/archive/libpq.tar.gz libpq -vvv
+```
+
 ## Thanks to the following configurations
 
 * [MatthiasBenaets](https://github.com/MatthiasBenaets/nixos-config)

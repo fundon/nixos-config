@@ -16,6 +16,7 @@ in
     specialArgs = {inherit inputs vars;};
     modules = [
       ./configuration.nix
+      ./homebrew.nix
       ./nix.nix
       (import ./nixpkgs.nix {inherit overlays;})
       home-manager.darwinModules.home-manager
@@ -44,6 +45,9 @@ in
             PNPM_HOME = "$HOME/.local/share/pnpm";
             ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/";
 
+            PUB_HOSTED_URL = "https://pub.flutter-io.cn";
+            FLUTTER_STORAGE_BASE_URL = "https://storage.flutter-io.cn";
+
             # `xcrun --show-sdk-path`
             inherit SDKROOT;
             # CC = "clang";
@@ -51,11 +55,21 @@ in
             # CFLAGS = "-Wno-undef-prefix";
             CPATH = "${SDKROOT}/usr/include";
 
+
+            PQ_LIB_DIR="${lib.getDev pkgs.postgresql_16}/include/libpq";
+            OPENSSL_LIB_DIR = "${lib.getLib pkgs.openssl}/lib";
+            OPENSSL_DIR = "${lib.getDev pkgs.openssl}";
             LIBRARY_PATH = lib.makeLibraryPath [
               pkgs.libiconv
               pkgs.openssl
             ];
+            PKG_CONFIG_PATH = lib.concatStringsSep ":" [
+              "${pkgs.openssl.dev}/lib/pkgconfig"
+            ];
 
+            LDFLAGS = lib.concatStringsSep " " [
+              "-l${pkgs.stdenv.cc.libcxx.cxxabi.libName}"
+            ];
             # LLVM_CONFIG_PATH = "${pkgs.llvm}/bin/llvm-config";
             # LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib];
             # LDFLAGS="-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib";
@@ -75,15 +89,29 @@ in
             #pkgs.gcc12
             # pkgs.clang_16
             # pkgs.llvm_16.dev
-            # pkgs.llvm_16 # without llvm-config
+            # pkgs.llvmPackages_16.llvm
+            # pkgs.llvmPackages_16.libllvm.dev
+            # # pkgs.llvmPackages_16
+            # # pkgs.llvm_16.libcxx
+            # pkgs.llvmPackages_16.libcxx
+            # pkgs.llvmPackages_16.libcxx.dev
+            # pkgs.llvmPackages_16.libcxxabi
+            # pkgs.llvmPackages_16.libcxxabi.dev
+            # # pkgs.llvm_16 # without llvm-config
+
+            pkgs.cmake
+            pkgs.ninja
 
             pkgs.mold
             pkgs.gnumake
             pkgs.openssl
             pkgs.pkg-config
             pkgs.libiconv
+
+            pkgs.libedit
+            pkgs.ncurses
+            pkgs.z3
             pkgs.zlib
-            pkgs.ninja
 
             pkgs.alejandra # nix formatter or pkgs.nixpkgs-fmt
             pkgs.bun
@@ -123,6 +151,9 @@ in
             pkgs.fd # fzf's default command
             pkgs.sd
 
+            # Protobuf
+            pkgs.protobuf
+
             ## JSON/YAML
             pkgs.jless
             pkgs.jql
@@ -140,6 +171,13 @@ in
             # pkgs.lua-language-server
             pkgs.stylua
 
+            # Swift
+            pkgs.cocoapods
+
+            ## Dart
+            # pkgs.dart
+            # pkgs.flutter-unwrapped
+
             ### Node LTS
             pkgs.nodejs_20
             (pkgs.yarn.override {
@@ -147,33 +185,33 @@ in
             })
 
             ### Rust
-            # pkgs.rustup
+            pkgs.rustup
             pkgs.sccache
 
             ### Overlays
             # pkgs.neovim-nightly
             # rust-bin.nightly.latest.default
-            (pkgs.rust-bin.${rustChannel}.latest.default.override {
-              targets =
-                ["wasm32-unknown-unknown"]
-                ++ [
-                  (
-                    lib.concatStringsSep "-" [
-                      "${arch}"
-                      (
-                        if isDarwin
-                        then "apple-darwin"
-                        else "unknown-linux-gnu"
-                      )
-                    ]
-                  )
-                ];
-              # https://rust-lang.github.io/rustup-components-history/x86_64-apple-darwin.html
-              # https://rust-lang.github.io/rustup-components-history/aarch64-apple-darwin.html
-              extensions =
-                ["rust-analyzer" "rust-src" "rust-std"]
-                ++ lib.optionals (isx86_64 && rustChannel == "nightly") ["rustc-codegen-cranelift"];
-            })
+            # (pkgs.rust-bin.${rustChannel}.latest.default.override {
+            #   targets =
+            #     ["wasm32-unknown-unknown"]
+            #     ++ [
+            #       (
+            #         lib.concatStringsSep "-" [
+            #           "${arch}"
+            #           (
+            #             if isDarwin
+            #             then "apple-darwin"
+            #             else "unknown-linux-gnu"
+            #           )
+            #         ]
+            #       )
+            #     ];
+            #   # https://rust-lang.github.io/rustup-components-history/x86_64-apple-darwin.html
+            #   # https://rust-lang.github.io/rustup-components-history/aarch64-apple-darwin.html
+            #   extensions =
+            #     ["rust-analyzer" "rust-src" "rust-std"]
+            #     ++ lib.optionals (isx86_64 && rustChannel == "nightly") ["rustc-codegen-cranelift"];
+            # })
             pkgs.zigpkgs.master
           ];
           # ++ lib.optionals isDarwin (with pkgs.darwin.apple_sdk.frameworks; [
@@ -217,6 +255,8 @@ in
               end
 
               set -gxp PATH $HOME/.npm-global/bin
+              set -gxp PATH $HOME/.pub-cache/bin
+              set -gxp PATH $HOME/.flutter/bin
               set -gxp PATH $HOME/.cargo/bin
               set -gxp PATH $HOME/.bin
             '';

@@ -44,10 +44,10 @@
     #  url = "github:nix-community/neovim-nightly-overlay";
     #  inputs.nixpkgs.follows = "nixpkgs";
     # };
-    rust-overlay = {
-      url = "github:oxalica/rust-overlay";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    # rust-overlay = {
+    #   url = "github:oxalica/rust-overlay";
+    #   inputs.nixpkgs.follows = "nixpkgs";
+    # };
     zig-overlay = {
       url = "github:mitchellh/zig-overlay";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -64,7 +64,7 @@
     # Overlays is the list of overlays we want to apply from flake inputs.
     overlays = with inputs; [
       # neovim-nightly-overlay.overlay
-      rust-overlay.overlays.default
+      # rust-overlay.overlays.default
       zig-overlay.overlays.default
     ];
 
