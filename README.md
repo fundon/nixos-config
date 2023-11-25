@@ -54,6 +54,27 @@ chsh -s /run/current-system/sw/bin/fish
 nix-env --list-generations --profile ~/.local/state/nix/profiles/home-manager
 ```
 
+* Clean profiles
+
+> See [How to remove NixOS system profile?](https://discourse.nixos.org/t/how-to-remove-a-nixos-system-profile/6317)
+
+```console
+$ # print current system profile
+$ nix-store --gc --print-roots | grep result
+/Users/fundon/.config/nix/result -> /nix/store/m2vnxs3xl1r0iwd7zj2r8kf0jprgw4r2-darwin-system-24.05.20231122.19cbff5+darwin4.4b9b83d
+
+$ # list all profiles
+$ ls -la /nix/var/nix/profiles/
+$ readlink /nix/var/nix/profiles/system
+system-153-link
+
+$ # remove old profiles
+$ ./scripts/clean-old-system-profiles.fish
+
+$ nix-store --optimise -vvv
+$ nix-collect-garbage -d -vvv
+```
+
 * Install `libpq`
 
 > Currently, `libpq` is not a package in `nix`.
