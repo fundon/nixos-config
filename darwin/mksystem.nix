@@ -72,14 +72,22 @@ in
 
             # LLVM_CONFIG_PATH = "${pkgs.llvm}/bin/llvm-config";
             # LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib];
-            LDFLAGS = lib.optionals isx86_64 (lib.concatStringsSep " " [
-              "-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"
-              "-L$HOME/.homebrew/opt/llvm/lib/c++ -Wl,-rpath,$HOME/.homebrew/opt/llvm/lib/c++"
-              "-L$HOME/.homebrew/opt/llvm/lib"
-            ]);
-            CPPFLAGS = lib.optionals isx86_64 (lib.concatStringsSep " " [
-              "-I$HOME/.homebrew/opt/llvm/include"
-            ]);
+            LDFLAGS =
+              if isx86_64
+              then
+                lib.concatStringsSep " " [
+                  "-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"
+                  "-L$HOME/.homebrew/opt/llvm/lib/c++ -Wl,-rpath,$HOME/.homebrew/opt/llvm/lib/c++"
+                  "-L$HOME/.homebrew/opt/llvm/lib"
+                ]
+              else "";
+            CPPFLAGS =
+              if isx86_64
+              then
+                lib.concatStringsSep " " [
+                  "-I$HOME/.homebrew/opt/llvm/include"
+                ]
+              else "";
           };
           home.packages = [
             pkgs.wget
