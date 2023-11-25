@@ -17,7 +17,7 @@
     shells = [bashInteractive fish zsh];
     systemPackages = [
       # PostgreSQL
-      postgresql_16
+      # postgresql_16
     ];
   };
 

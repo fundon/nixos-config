@@ -60,7 +60,6 @@ in
               # CFLAGS = "-Wno-undef-prefix";
               CPATH = "${SDKROOT}/usr/include";
 
-              PQ_LIB_DIR = "${lib.getDev pkgs.postgresql_16}/include/libpq";
               OPENSSL_LIB_DIR = "${lib.getLib pkgs.openssl}/lib";
               OPENSSL_DIR = "${lib.getDev pkgs.openssl}";
 
@@ -74,15 +73,10 @@ in
 
               # LLVM_CONFIG_PATH = "${pkgs.llvm}/bin/llvm-config";
               # LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib];
-              # LDFLAGS="-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib";
-              # NIX_LDFLAGS = ''${lib.concatStringsSep " " [
-              #     "-F${pkgs.darwin.apple_sdk.frameworks.CoreFoundation}/Library/Frameworks -framework CoreFoundation"
-              #     "-F${pkgs.darwin.apple_sdk.frameworks.CoreServices}/Library/Frameworks -framework CoreServices"
-              #     "-F${pkgs.darwin.apple_sdk.frameworks.Security}/Library/Frameworks -framework Security"
-              #   ]}'';
             }
-            ++ lib.optionals isx86_64 {
+            // lib.optionals isx86_64 {
               LDFLAGS = lib.concatStringsSep " " [
+                "-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"
                 "-L$HOME/.homebrew/opt/llvm/lib/c++ -Wl,-rpath,$HOME/.homebrew/opt/llvm/lib/c++"
                 "-L$HOME/.homebrew/opt/llvm/lib"
               ];
@@ -250,24 +244,27 @@ in
 
           programs.fish = {
             enable = true;
-            shellInit =
-              ''
-                set fish_greeting
+            shellInit = ''
+              set fish_greeting
 
-                if isatty
-                    set -x GPG_TTY (tty)
-                end
+              if isatty
+                  set -x GPG_TTY (tty)
+              end
 
-                set -gxp PATH $HOME/.npm-global/bin
-                set -gxp PATH $HOME/.pub-cache/bin
-                set -gxp PATH $HOME/.flutter/bin
-                set -gxp PATH $HOME/.cargo/bin
-                set -gxp PATH $HOME/.bin
-              ''
-              ++ lib.optionals isx86_64 ''
-                set -gxp PATH $HOME/.homebrew/opt/llvm/bin
-                set -gxp PATH $HOME/.homebrew/bin
-              '';
+              ${
+                lib.concatLines ([
+                    "set -gxp PATH $HOME/.npm-global/bin"
+                    "set -gxp PATH $HOME/.pub-cache/bin"
+                    "set -gxp PATH $HOME/.flutter/bin"
+                    "set -gxp PATH $HOME/.cargo/bin"
+                    "set -gxp PATH $HOME/.bin"
+                  ]
+                  ++ lib.optionals isx86_64 [
+                    "set -gxp PATH $HOME/.homebrew/opt/llvm/bin"
+                    "set -gxp PATH $HOME/.homebrew/bin"
+                  ])
+              }
+            '';
             shellAbbrs = {
               cargo-login = "cargo login --registry crates-io";
               cargo-publish = "cargo publish --registry crates-io";
