@@ -29,61 +29,58 @@ in
 
         home-manager.users.fundon = {
           home.stateVersion = "23.05";
-          home.sessionVariables =
-            {
-              # https://github.com/NixOS/nix/issues/2982
-              NIX_PATH = "$HOME/.nix-defexpr/channels";
+          home.sessionVariables = {
+            # https://github.com/NixOS/nix/issues/2982
+            NIX_PATH = "$HOME/.nix-defexpr/channels";
 
-              EDITOR = "${vars.editor}";
-              PAGER = "less -FirSwX";
+            EDITOR = "${vars.editor}";
+            PAGER = "less -FirSwX";
 
-              GOPROXY = "https://goproxy.io,direct";
+            GOPROXY = "https://goproxy.io,direct";
 
-              RUSTUP_DIST_SERVER = "https://rsproxy.cn";
-              RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup";
+            RUSTUP_DIST_SERVER = "https://rsproxy.cn";
+            RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup";
 
-              PNPM_HOME = "$HOME/.local/share/pnpm";
-              ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/";
+            PNPM_HOME = "$HOME/.local/share/pnpm";
+            ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/";
 
-              PUB_HOSTED_URL = "https://pub.flutter-io.cn";
-              FLUTTER_STORAGE_BASE_URL = "https://storage.flutter-io.cn";
+            PUB_HOSTED_URL = "https://pub.flutter-io.cn";
+            FLUTTER_STORAGE_BASE_URL = "https://storage.flutter-io.cn";
 
-              HOMEBREW_BREW_GIT_REMOTE = "https://mirrors.ustc.edu.cn/brew.git";
-              HOMEBREW_CORE_GIT_REMOTE = "https://mirrors.ustc.edu.cn/homebrew-core.git";
-              HOMEBREW_BOTTLE_DOMAIN = "https://mirrors.ustc.edu.cn/homebrew-bottles";
-              HOMEBREW_API_DOMAIN = "https://mirrors.ustc.edu.cn/homebrew-bottles/api";
+            HOMEBREW_BREW_GIT_REMOTE = "https://mirrors.ustc.edu.cn/brew.git";
+            HOMEBREW_CORE_GIT_REMOTE = "https://mirrors.ustc.edu.cn/homebrew-core.git";
+            HOMEBREW_BOTTLE_DOMAIN = "https://mirrors.ustc.edu.cn/homebrew-bottles";
+            HOMEBREW_API_DOMAIN = "https://mirrors.ustc.edu.cn/homebrew-bottles/api";
 
-              # `xcrun --show-sdk-path`
-              inherit SDKROOT;
-              # CC = "clang";
-              # CXX = "clang++";
-              # CFLAGS = "-Wno-undef-prefix";
-              CPATH = "${SDKROOT}/usr/include";
+            # `xcrun --show-sdk-path`
+            inherit SDKROOT;
+            # CC = "clang";
+            # CXX = "clang++";
+            # CFLAGS = "-Wno-undef-prefix";
+            CPATH = "${SDKROOT}/usr/include";
 
-              OPENSSL_LIB_DIR = "${lib.getLib pkgs.openssl}/lib";
-              OPENSSL_DIR = "${lib.getDev pkgs.openssl}";
+            OPENSSL_LIB_DIR = "${lib.getLib pkgs.openssl}/lib";
+            OPENSSL_DIR = "${lib.getDev pkgs.openssl}";
 
-              LIBRARY_PATH = lib.makeLibraryPath [
-                pkgs.libiconv
-                pkgs.openssl
-              ];
-              PKG_CONFIG_PATH = lib.concatStringsSep ":" [
-                "${pkgs.openssl.dev}/lib/pkgconfig"
-              ];
+            LIBRARY_PATH = lib.makeLibraryPath [
+              pkgs.libiconv
+              pkgs.openssl
+            ];
+            PKG_CONFIG_PATH = lib.concatStringsSep ":" [
+              "${pkgs.openssl.dev}/lib/pkgconfig"
+            ];
 
-              # LLVM_CONFIG_PATH = "${pkgs.llvm}/bin/llvm-config";
-              # LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib];
-            }
-            // lib.optionals isx86_64 {
-              LDFLAGS = lib.concatStringsSep " " [
-                "-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"
-                "-L$HOME/.homebrew/opt/llvm/lib/c++ -Wl,-rpath,$HOME/.homebrew/opt/llvm/lib/c++"
-                "-L$HOME/.homebrew/opt/llvm/lib"
-              ];
-              CPPFLAGS = lib.concatStringsSep " " [
-                "-I$HOME/.homebrew/opt/llvm/include"
-              ];
-            };
+            # LLVM_CONFIG_PATH = "${pkgs.llvm}/bin/llvm-config";
+            # LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib];
+            LDFLAGS = lib.optionals isx86_64 (lib.concatStringsSep " " [
+              "-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib"
+              "-L$HOME/.homebrew/opt/llvm/lib/c++ -Wl,-rpath,$HOME/.homebrew/opt/llvm/lib/c++"
+              "-L$HOME/.homebrew/opt/llvm/lib"
+            ]);
+            CPPFLAGS = lib.optionals isx86_64 (lib.concatStringsSep " " [
+              "-I$HOME/.homebrew/opt/llvm/include"
+            ]);
+          };
           home.packages = [
             pkgs.wget
             pkgs.file
