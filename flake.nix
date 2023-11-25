@@ -83,7 +83,14 @@
       darwinConfigurations = (
         import ./darwin {
           inherit (nixpkgs) lib;
-          inherit inputs nixpkgs home-manager darwin vars overlays;
+          inherit
+            inputs
+            nixpkgs
+            home-manager
+            darwin
+            vars
+            overlays
+            ;
         }
       );
     }

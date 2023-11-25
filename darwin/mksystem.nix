@@ -9,19 +9,18 @@
   ...
 }: arch: let
   system = "${arch}-darwin";
-  rustChannel = "nightly"; # stable | beta | nightly
+  # rustChannel = "nightly"; # stable | beta | nightly
 in
   darwin.lib.darwinSystem {
     inherit system;
     specialArgs = {inherit inputs vars;};
     modules = [
       ./configuration.nix
-      ./homebrew.nix
       ./nix.nix
       (import ./nixpkgs.nix {inherit overlays;})
       home-manager.darwinModules.home-manager
       ({pkgs, ...} @ args: let
-        isDarwin = pkgs.stdenv.isDarwin;
+        # isDarwin = pkgs.stdenv.isDarwin;
         isx86_64 = pkgs.stdenv.hostPlatform.isx86_64;
         SDKROOT = "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk";
       in {
@@ -30,55 +29,67 @@ in
 
         home-manager.users.fundon = {
           home.stateVersion = "23.05";
-          home.sessionVariables = {
-            # https://github.com/NixOS/nix/issues/2982
-            NIX_PATH = "$HOME/.nix-defexpr/channels";
+          home.sessionVariables =
+            {
+              # https://github.com/NixOS/nix/issues/2982
+              NIX_PATH = "$HOME/.nix-defexpr/channels";
 
-            EDITOR = "${vars.editor}";
-            PAGER = "less -FirSwX";
+              EDITOR = "${vars.editor}";
+              PAGER = "less -FirSwX";
 
-            GOPROXY = "https://goproxy.io,direct";
+              GOPROXY = "https://goproxy.io,direct";
 
-            RUSTUP_DIST_SERVER = "https://rsproxy.cn";
-            RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup";
+              RUSTUP_DIST_SERVER = "https://rsproxy.cn";
+              RUSTUP_UPDATE_ROOT = "https://rsproxy.cn/rustup";
 
-            PNPM_HOME = "$HOME/.local/share/pnpm";
-            ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/";
+              PNPM_HOME = "$HOME/.local/share/pnpm";
+              ELECTRON_MIRROR = "https://npmmirror.com/mirrors/electron/";
 
-            PUB_HOSTED_URL = "https://pub.flutter-io.cn";
-            FLUTTER_STORAGE_BASE_URL = "https://storage.flutter-io.cn";
+              PUB_HOSTED_URL = "https://pub.flutter-io.cn";
+              FLUTTER_STORAGE_BASE_URL = "https://storage.flutter-io.cn";
 
-            # `xcrun --show-sdk-path`
-            inherit SDKROOT;
-            # CC = "clang";
-            # CXX = "clang++";
-            # CFLAGS = "-Wno-undef-prefix";
-            CPATH = "${SDKROOT}/usr/include";
+              HOMEBREW_BREW_GIT_REMOTE = "https://mirrors.ustc.edu.cn/brew.git";
+              HOMEBREW_CORE_GIT_REMOTE = "https://mirrors.ustc.edu.cn/homebrew-core.git";
+              HOMEBREW_BOTTLE_DOMAIN = "https://mirrors.ustc.edu.cn/homebrew-bottles";
+              HOMEBREW_API_DOMAIN = "https://mirrors.ustc.edu.cn/homebrew-bottles/api";
 
+              # `xcrun --show-sdk-path`
+              inherit SDKROOT;
+              # CC = "clang";
+              # CXX = "clang++";
+              # CFLAGS = "-Wno-undef-prefix";
+              CPATH = "${SDKROOT}/usr/include";
 
-            PQ_LIB_DIR="${lib.getDev pkgs.postgresql_16}/include/libpq";
-            OPENSSL_LIB_DIR = "${lib.getLib pkgs.openssl}/lib";
-            OPENSSL_DIR = "${lib.getDev pkgs.openssl}";
-            LIBRARY_PATH = lib.makeLibraryPath [
-              pkgs.libiconv
-              pkgs.openssl
-            ];
-            PKG_CONFIG_PATH = lib.concatStringsSep ":" [
-              "${pkgs.openssl.dev}/lib/pkgconfig"
-            ];
+              PQ_LIB_DIR = "${lib.getDev pkgs.postgresql_16}/include/libpq";
+              OPENSSL_LIB_DIR = "${lib.getLib pkgs.openssl}/lib";
+              OPENSSL_DIR = "${lib.getDev pkgs.openssl}";
 
-            LDFLAGS = lib.concatStringsSep " " [
-              "-l${pkgs.stdenv.cc.libcxx.cxxabi.libName}"
-            ];
-            # LLVM_CONFIG_PATH = "${pkgs.llvm}/bin/llvm-config";
-            # LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib];
-            # LDFLAGS="-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib";
-            # NIX_LDFLAGS = ''${lib.concatStringsSep " " [
-            #     "-F${pkgs.darwin.apple_sdk.frameworks.CoreFoundation}/Library/Frameworks -framework CoreFoundation"
-            #     "-F${pkgs.darwin.apple_sdk.frameworks.CoreServices}/Library/Frameworks -framework CoreServices"
-            #     "-F${pkgs.darwin.apple_sdk.frameworks.Security}/Library/Frameworks -framework Security"
-            #   ]}'';
-          };
+              LIBRARY_PATH = lib.makeLibraryPath [
+                pkgs.libiconv
+                pkgs.openssl
+              ];
+              PKG_CONFIG_PATH = lib.concatStringsSep ":" [
+                "${pkgs.openssl.dev}/lib/pkgconfig"
+              ];
+
+              # LLVM_CONFIG_PATH = "${pkgs.llvm}/bin/llvm-config";
+              # LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.stdenv.cc.cc.lib];
+              # LDFLAGS="-L/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/lib";
+              # NIX_LDFLAGS = ''${lib.concatStringsSep " " [
+              #     "-F${pkgs.darwin.apple_sdk.frameworks.CoreFoundation}/Library/Frameworks -framework CoreFoundation"
+              #     "-F${pkgs.darwin.apple_sdk.frameworks.CoreServices}/Library/Frameworks -framework CoreServices"
+              #     "-F${pkgs.darwin.apple_sdk.frameworks.Security}/Library/Frameworks -framework Security"
+              #   ]}'';
+            }
+            ++ lib.optionals isx86_64 {
+              LDFLAGS = lib.concatStringsSep " " [
+                "-L$HOME/.homebrew/opt/llvm/lib/c++ -Wl,-rpath,$HOME/.homebrew/opt/llvm/lib/c++"
+                "-L$HOME/.homebrew/opt/llvm/lib"
+              ];
+              CPPFLAGS = lib.concatStringsSep " " [
+                "-I$HOME/.homebrew/opt/llvm/include"
+              ];
+            };
           home.packages = [
             pkgs.wget
             pkgs.file
@@ -87,17 +98,9 @@ in
             pkgs.xz
 
             #pkgs.gcc12
-            # pkgs.clang_16
-            # pkgs.llvm_16.dev
-            # pkgs.llvmPackages_16.llvm
-            # pkgs.llvmPackages_16.libllvm.dev
-            # # pkgs.llvmPackages_16
-            # # pkgs.llvm_16.libcxx
-            # pkgs.llvmPackages_16.libcxx
-            # pkgs.llvmPackages_16.libcxx.dev
-            # pkgs.llvmPackages_16.libcxxabi
-            # pkgs.llvmPackages_16.libcxxabi.dev
-            # # pkgs.llvm_16 # without llvm-config
+            # pkgs.llvmPackages
+            # pkgs.clang
+            # pkgs.llvm_16 # without llvm-config
 
             pkgs.cmake
             pkgs.ninja
@@ -247,19 +250,24 @@ in
 
           programs.fish = {
             enable = true;
-            shellInit = ''
-              set fish_greeting
+            shellInit =
+              ''
+                set fish_greeting
 
-              if isatty
-                  set -x GPG_TTY (tty)
-              end
+                if isatty
+                    set -x GPG_TTY (tty)
+                end
 
-              set -gxp PATH $HOME/.npm-global/bin
-              set -gxp PATH $HOME/.pub-cache/bin
-              set -gxp PATH $HOME/.flutter/bin
-              set -gxp PATH $HOME/.cargo/bin
-              set -gxp PATH $HOME/.bin
-            '';
+                set -gxp PATH $HOME/.npm-global/bin
+                set -gxp PATH $HOME/.pub-cache/bin
+                set -gxp PATH $HOME/.flutter/bin
+                set -gxp PATH $HOME/.cargo/bin
+                set -gxp PATH $HOME/.bin
+              ''
+              ++ lib.optionals isx86_64 ''
+                set -gxp PATH $HOME/.homebrew/opt/llvm/bin
+                set -gxp PATH $HOME/.homebrew/bin
+              '';
             shellAbbrs = {
               cargo-login = "cargo login --registry crates-io";
               cargo-publish = "cargo publish --registry crates-io";
