@@ -8,12 +8,12 @@
   };
 
   inputs = {
-    # `nixos-23.05` | `nixos-unstable` | `nixos-unstable-small`
+    # `nixos-23.11` | `nixos-unstable` | `nixos-unstable-small`
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
 
     flake-utils.url = "github:numtide/flake-utils";
 
-    # `release-23.05` | `main`
+    # `release-23.11` | `main`
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";

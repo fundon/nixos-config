@@ -28,7 +28,7 @@ in
         home-manager.useUserPackages = true;
 
         home-manager.users.fundon = {
-          home.stateVersion = "23.05";
+          home.stateVersion = "23.11";
           home.sessionVariables = {
             # https://github.com/NixOS/nix/issues/2982
             NIX_PATH = "$HOME/.nix-defexpr/channels";
