@@ -139,8 +139,9 @@ in
             ## Network
             pkgs.bandwhich
             pkgs.gping
-            pkgs.rustscan
             pkgs.hurl
+            pkgs.rustscan
+            pkgs.trippy
 
             ## Filesystem
             pkgs.erdtree
