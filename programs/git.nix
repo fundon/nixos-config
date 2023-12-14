@@ -58,7 +58,7 @@
         date = "iso";
       };
       sequence = {
-        editor = "${pkgs.git-interactive-rebase-tool}/bin/git-interactive-rebase-tool";
+        editor = "${pkgs.git-interactive-rebase-tool}/bin/interactive-rebase-tool";
       };
       pretty = {
         custom = "%C(magenta)%h%C(red)%d %C(yellow)%ar %C(green)%s %C(yellow)(%an)";
