@@ -159,6 +159,7 @@ in
 
             ## JSON/YAML
             pkgs.jless
+            pkgs.jq
             pkgs.jql
 
             ## Editor
@@ -253,8 +254,10 @@ in
             shellInit = ''
               set fish_greeting
 
+              set -gx TZ Asia/Hong_Kong
+
               if isatty
-                  set -x GPG_TTY (tty)
+                  set -gx GPG_TTY (tty)
               end
 
               ${
