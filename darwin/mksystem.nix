@@ -127,6 +127,7 @@ in
             pkgs.tailspin # CLI name: spin
             pkgs.taplo
             pkgs.typos
+            pkgs.wstunnel
 
             ## Git
             pkgs.gh
