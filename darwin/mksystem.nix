@@ -185,9 +185,11 @@ in
 
             ### Node LTS
             pkgs.nodejs_20
-            (pkgs.yarn.override {
-              nodejs = pkgs.nodejs_20;
-            })
+            # (pkgs.yarn.override {
+            #   nodejs = pkgs.nodejs_20;
+            # })
+            pkgs.yarn
+            pkgs.fnm
 
             ### Rust
             pkgs.rustup
