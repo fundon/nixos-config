@@ -190,6 +190,7 @@ in
             # })
             #pkgs.yarn
             pkgs.fnm
+            pkgs.deno
 
             ### Rust
             pkgs.rustup
@@ -265,6 +266,7 @@ in
 
               ${
                 lib.concatLines ([
+                    "set -gxp PATH $HOME/.local/share/pnpm"
                     "set -gxp PATH $HOME/.npm-global/bin"
                     "set -gxp PATH $HOME/.pub-cache/bin"
                     "set -gxp PATH $HOME/.flutter/bin"
